@@ -1,3 +1,11 @@
+DROP TABLE IF EXISTS transactions, accounts, customers, cards, atms, branches, employees, daily_transaction_summary CASCADE;
+DROP TYPE IF EXISTS transaction_via CASCADE;
+
+
+CREATE EXTENSION IF NOT EXISTS pgcrypto;
+
+CREATE TYPE transaction_via AS ENUM ('atm', 'branch');
+
 CREATE TABLE customers (
     customer_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     full_name VARCHAR(100) NOT NULL,
@@ -43,15 +51,15 @@ CREATE TABLE employees (
     role VARCHAR(50)
 );
 
-CREATE TYPE transaction_via AS ENUM ('atm', 'branch');
 
 CREATE TABLE transactions (
     transaction_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     account_id UUID REFERENCES accounts(account_id),
     amount NUMERIC(12,2) NOT NULL,
-    transaction_type VARCHAR(50) NOT NULL,
+    transaction_type VARCHAR(50) NOT NULL CHECK (transaction_type IN ('deposit','withdrawal','transfer')),
     performed_at TIMESTAMP DEFAULT NOW(),
     performed_via transaction_via NOT NULL,
     atm_id UUID REFERENCES atms(atm_id),
-    branch_id UUID REFERENCES branches(branch_id)
+    branch_id UUID REFERENCES branches(branch_id),
+    destination_account_id UUID REFERENCES accounts(account_id)
 );

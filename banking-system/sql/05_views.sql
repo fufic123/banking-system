@@ -1,3 +1,5 @@
+DROP VIEW IF EXISTS v_customer_transactions CASCADE;
+
 CREATE VIEW v_customer_transactions AS
 SELECT c.full_name AS customer_name,
        a.account_type,

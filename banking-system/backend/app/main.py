@@ -1,11 +1,13 @@
 from fastapi import FastAPI
-from .routers.customers import router as customers_router
-from .routers.accounts import router as accounts_router
-from .routers.cards import router as cards_router
-from .routers.atms import router as atms_router
-from .routers.branches import router as branches_router
-from .routers.employees import router as employees_router
-from .routers.transactions import router as transactions_router
+
+from routers.customers import router as customers_router
+from routers.accounts import router as accounts_router
+from routers.cards import router as cards_router
+from routers.atms import router as atms_router
+from routers.branches import router as branches_router
+from routers.employees import router as employees_router
+from routers.transactions import router as transactions_router
+
 
 app = FastAPI()
 
